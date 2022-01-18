@@ -27,6 +27,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/nette/forms" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nette/mail" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nette/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/log" />
+      <excludeFolder url="file://$MODULE_DIR$/temp" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
