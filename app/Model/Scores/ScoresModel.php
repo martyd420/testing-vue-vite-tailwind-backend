@@ -19,7 +19,7 @@ class ScoresModel
 
 
     /** @return Score[] */
-    public function getScores($limit = 10): array
+    public function getScores($limit = 64): array
     {
         $scores = $this->database->table('score')->order('score DESC')->limit($limit);
 
@@ -60,7 +60,7 @@ class ScoresModel
         }
 
         //filter nick
-        $nick = mb_substr($score->nick,0, 16);
+        $nick = mb_substr($score->nick, 0, 16);
         $nick = preg_replace('/[^\w\s+$]/u', '_', $nick);
 
         $insert = [
