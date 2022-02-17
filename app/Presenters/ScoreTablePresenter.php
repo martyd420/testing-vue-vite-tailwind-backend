@@ -66,14 +66,15 @@ final class ScoreTablePresenter extends Nette\Application\UI\Presenter
         $ret = new stdClass();
 
         if ($score_data->speed == floor(1 + $score_data->score / $score_data->moves)) {
-            $ret->scorestatus = 'ok';
-            $ret->time = $time;
+            $ret->scorestatus   = 'ok';
+            $ret->time          = $time;
+            $ret->message       = 'Score uloženo'; // default message
 
-            $score = new Score;
-            $score->nick = $score_data->nick;
-            $score->score = $score_data->score;
-            $score->moves = (int)$score_data->moves;
-            $score->time = $time;
+            $score          = new Score;
+            $score->nick    = $score_data->nick;
+            $score->score   = $score_data->score;
+            $score->moves   = (int)$score_data->moves;
+            $score->time    = $time;
 
             try {
                 $this->scoresModel->saveScore($score);
