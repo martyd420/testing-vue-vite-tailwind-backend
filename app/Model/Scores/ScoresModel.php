@@ -59,9 +59,13 @@ class ScoresModel
             throw new ZeroScoreException();
         }
 
+        //filter nick
+        $nick = mb_substr($score->nick,0, 16);
+        $nick = preg_replace('/[^\w\s+$]/u', '_', $nick);
+
         $insert = [
-            'score' => $score->score,
-            'nick'  => $score->nick,
+            'score' => (int)$score->score,
+            'nick'  => $nick,
             'moves' => $score->moves,
             'time'  => $score->time,
             'ip'    => $_SERVER['REMOTE_ADDR'],
