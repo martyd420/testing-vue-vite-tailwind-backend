@@ -55,7 +55,7 @@ class ScoresModel
             throw new SpammerException();
         }
 
-        if ($score->score = 0) {
+        if ($score->score == 0) {
             throw new ZeroScoreException();
         }
 
