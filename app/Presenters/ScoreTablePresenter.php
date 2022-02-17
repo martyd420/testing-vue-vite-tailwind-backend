@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Model\Exceptions\SpammerException;
+use App\Model\Exceptions\ZeroScoreException;
 use App\Model\Scores\Score;
 use App\Model\Scores\ScoresModel;
 use Nette;
@@ -79,6 +80,10 @@ final class ScoreTablePresenter extends Nette\Application\UI\Presenter
             } catch (SpammerException $e) {
                 $ret->scorestatus = 'err';
                 $ret->message = 'ANTISPAM: Zdá se, že příliš rychle za sebou odesíláte nové score.';
+                $ret->time = 0;
+            } catch (ZeroScoreException $e) {
+                $ret->scorestatus = 'err';
+                $ret->message = 'Nulové score do rekordů asi ukládat nemusíme :)';
                 $ret->time = 0;
             }
 

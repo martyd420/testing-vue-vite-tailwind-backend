@@ -3,6 +3,7 @@
 namespace App\Model\Scores;
 
 use App\Model\Exceptions\SpammerException;
+use App\Model\Exceptions\ZeroScoreException;
 use Nette\Database\Explorer;
 
 class ScoresModel
@@ -39,6 +40,7 @@ class ScoresModel
     /** @noinspection PhpUndefinedFieldInspection */
     /**
      * @throws SpammerException
+     * @throws ZeroScoreException
      */
     public function saveScore(Score $score)
     {
@@ -53,6 +55,9 @@ class ScoresModel
             throw new SpammerException();
         }
 
+        if ($score->score = 0) {
+            throw new ZeroScoreException();
+        }
 
         $insert = [
             'score' => $score->score,
