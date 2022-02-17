@@ -2,6 +2,7 @@
 
 namespace App\Model\Scores;
 
+use App\Model\Exceptions\SpammerException;
 use Nette\Database\Explorer;
 
 class ScoresModel
@@ -35,13 +36,30 @@ class ScoresModel
     }
 
 
+    /** @noinspection PhpUndefinedFieldInspection */
+    /**
+     * @throws SpammerException
+     */
     public function saveScore(Score $score)
     {
+        // antispam check
+        $last = $this->database->table('score')
+            ->where('ip = ?', $_SERVER['REMOTE_ADDR'])
+            ->order('time DESC')
+            ->limit(1)
+            ->fetch();
+
+        if (time() - $last->time < 60) {
+            throw new SpammerException();
+        }
+
+
         $insert = [
             'score' => $score->score,
-            'nick' => $score->nick,
+            'nick'  => $score->nick,
             'moves' => $score->moves,
-            'time' => $score->time,
+            'time'  => $score->time,
+            'ip'    => $_SERVER['REMOTE_ADDR'],
         ];
         $this->database->table('score')->insert($insert);
     }

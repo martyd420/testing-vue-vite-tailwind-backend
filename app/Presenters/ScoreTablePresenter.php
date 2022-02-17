@@ -1,11 +1,11 @@
 <?php
 /** @noinspection PhpMissingParentConstructorInspection */
-/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\Model\Exceptions\SpammerException;
 use App\Model\Scores\Score;
 use App\Model\Scores\ScoresModel;
 use Nette;
@@ -41,6 +41,9 @@ final class ScoreTablePresenter extends Nette\Application\UI\Presenter
     }
 
 
+    /**
+     * @throws Nette\Application\AbortException
+     */
     public function renderGetScores()
     {
         $scores = $this->scoresModel->getScores();
@@ -48,6 +51,9 @@ final class ScoreTablePresenter extends Nette\Application\UI\Presenter
     }
 
 
+    /**
+     * @throws Nette\Application\AbortException
+     */
     public function renderUploadScore()
     {
         $time = time();
@@ -68,7 +74,13 @@ final class ScoreTablePresenter extends Nette\Application\UI\Presenter
             $score->moves = (int)$score_data->moves;
             $score->time = $time;
 
-            $this->scoresModel->saveScore($score);
+            try {
+                $this->scoresModel->saveScore($score);
+            } catch (SpammerException $e) {
+                $ret->scorestatus = 'err';
+                $ret->message = 'ANTISPAM: Zdá se, že příliš rychle za sebou odesíláte nové score.';
+                $ret->time = 0;
+            }
 
         } else {
             $ret->scorestatus = 'err';
